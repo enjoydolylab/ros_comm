@@ -36,6 +36,9 @@
 #include "ros/assert.h"
 #include <boost/scope_exit.hpp>
 
+#include <time.h>
+#include <cstdint>
+
 namespace ros
 {
 
@@ -400,7 +403,25 @@ CallbackQueue::CallOneResult CallbackQueue::callOneCB(TLS* tls)
       else
       {
         tls->cb_it = tls->callbacks.erase(tls->cb_it);
+        struct timespec ts_start, ts_end;
+        clock_gettime(CLOCK_MONOTONIC, &ts_start);
         result = cb->call();
+        clock_gettime(CLOCK_MONOTONIC, &ts_end);
+
+        long nsec;
+        std::int64_t tsec;
+
+        if (ts_start.tv_nsec < ts_end.tv_nsec) {
+          nsec = ts_end.tv_nsec - ts_start.tv_nsec;
+          tsec = ts_end.tv_sec - ts_start.tv_sec;
+        }
+        else {//繰り下がり必要
+          nsec = 1000000000 + ts_end.tv_nsec - ts_start.tv_nsec;
+          tsec = ts_end.tv_sec - ts_start.tv_sec - 1;
+        }
+
+        // std::cout << "Callback is called! : " << id_info->id << " time is :" << tsec << "." << nsec <<  std::endl;
+        std::cout << "{ \"op_code\": \"notify_burst_time\", \"removal_id\": \"" << id_info->id << "\", \"time\": \"" << tsec << "." << nsec << "\"}" <<  std::endl;
         if (result == CallbackInterface::Success)
         {
           condition_.notify_one();

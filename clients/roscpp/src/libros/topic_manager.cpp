@@ -245,6 +245,8 @@ bool TopicManager::addSubCallback(const SubscribeOptions& ops)
 // this function has the subscription code that doesn't need to be templated.
 bool TopicManager::subscribe(const SubscribeOptions& ops)
 {
+  // std::cout << "This function is `TopicManager::subscribe`" << std::endl;
+  // std::cout << "(topic, md5sum)" << ops.topic << ", " << ops.md5sum << std::endl;
   boost::mutex::scoped_lock lock(subs_mutex_);
 
   if (addSubCallback(ops))

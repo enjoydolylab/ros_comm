@@ -48,6 +48,9 @@
 
 #include <boost/thread.hpp>
 
+#include <sys/types.h>
+#include <unistd.h>
+
 namespace ros
 {
 
@@ -322,6 +325,8 @@ Publisher NodeHandle::advertise(AdvertiseOptions& ops)
 Subscriber NodeHandle::subscribe(SubscribeOptions& ops)
 {
   ops.topic = resolveName(ops.topic);
+  // std::cout << "NodeHandle::subscribe/ops.topic, ops.md5sum, pid = " << ops.topic << ", " << ops.md5sum << ", " << getpid() << std::endl;
+  std::cout << "{ \"op_code\": \"add_to_NodeMeta\", \"topic\": \"" << ops.topic << "\", \"md5sum\": \"" << ops.md5sum << "\", \"pid\": \"" << getpid() << "\"}" <<  std::endl;
   if (ops.callback_queue == 0)
   {
     if (callback_queue_)
