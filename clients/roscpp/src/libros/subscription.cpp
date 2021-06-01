@@ -709,8 +709,7 @@ bool Subscription::addCallback(const SubscriptionCallbackHelperPtr& helper, cons
     info->subscription_queue_ = boost::make_shared<SubscriptionQueue>(name_, queue_size, allow_concurrent_callbacks);
     info->tracked_object_ = tracked_object;
     info->has_tracked_object_ = false;
-    // std::cout << "(md5sum, removal_id) : " << md5sum << ", "<< (uint64_t)info.get() << std::endl;
-    std::cout << "{ \"op_code\": \"set_removal_id\", \"md5sum\": \"" << md5sum << "\", \"removal_id\": \"" << (uint64_t)info.get() << "\"}" <<  std::endl;
+    std::cout << "(md5sum, removal_id) : " << md5sum << ", "<< (uint64_t)info.get() << std::endl;
     if (tracked_object)
     {
       info->has_tracked_object_ = true;

@@ -420,8 +420,7 @@ CallbackQueue::CallOneResult CallbackQueue::callOneCB(TLS* tls)
           tsec = ts_end.tv_sec - ts_start.tv_sec - 1;
         }
 
-        // std::cout << "Callback is called! : " << id_info->id << " time is :" << tsec << "." << nsec <<  std::endl;
-        std::cout << "{ \"op_code\": \"notify_burst_time\", \"removal_id\": \"" << id_info->id << "\", \"time\": \"" << tsec << "." << nsec << "\"}" <<  std::endl;
+        std::cout << "Callback is called! : " << id_info->id << " time is :" << tsec << "." << nsec <<  std::endl;
         if (result == CallbackInterface::Success)
         {
           condition_.notify_one();
